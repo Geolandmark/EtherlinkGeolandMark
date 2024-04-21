@@ -6,14 +6,11 @@ import leftup from "../../assets/left-up.svg";
 import rightup from "../../assets/right-up.svg";
 import middleup from "../../assets/middle-up.svg";
 import middledown from "../../assets/middle-down.svg";
-import user1 from "../../assets/user1.svg";
-import user2 from "../../assets/user2.svg";
-import user3 from "../../assets/user3.svg";
 import quote from "../../assets/quote.svg";
 import swiperData from "../../json/swiperData";
 import prev from "../../assets/prev.svg";
 import next from "../../assets/next.svg";
-import swiper from "../../json/swiperData";
+
 
 function PageSix() {
   const [moveRight, setMoveRight] = useState(0);
@@ -67,7 +64,6 @@ function PageSix() {
       <p className="text-[#B9B9B9] font-bold text-center mb-[12.5vh] ">
         Real People, Real Experiences: Testimonials from GeoLandmark Users
       </p>
-      {/* swiper container */}
       return (
       <div className="flex items-center justify-center gap-[8.92vw] mb-[7.78vh]  ">
         <div className="w-[15.73vw] h-[31.67vh] relative ">

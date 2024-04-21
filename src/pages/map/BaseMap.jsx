@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import { BaseMap as Map } from "../../lib/leaflets";
 import Navbar from "../landing/Navbar";
-import { useAuth } from "../../contexts/authContext";
+import { useContract } from "../../contexts/contractContext";
 
 function BaseMap() {
-const { fetchAllData } = useAuth()
+const { fetchAllData } = useContract()
 const [fetchedData, setFetchedData] = useState([]);
 
   useEffect(() => {

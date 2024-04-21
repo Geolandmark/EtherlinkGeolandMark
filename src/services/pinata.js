@@ -1,7 +1,6 @@
 const axios = require("axios");
 
 const PINATA_JWT = process.env.REACT_APP_PINATA_JWT_TOKEN 
-const GATEWAY_URL = process.env.REACT_APP_PINATA_GATEWAY_URL;
 const PINATA_API_BASE_URL = "https://api.pinata.cloud";
 const PINATA_API_KEY =process.env.REACT_APP_PINATA_API_KEY;
 const PINATA_SECRET_API_KEY = process.env.REACT_APP_PINATA_SECRET_API_KEY

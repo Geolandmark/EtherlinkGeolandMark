@@ -3,16 +3,15 @@ import locationIcon from "../../assets/marketplace/location.svg";
 import people from "../../assets/marketplace/people.svg";
 import privateImg from "../../assets/marketplace/private.svg";
 import { useNavigate } from "react-router-dom";
-import { getSingleRegisteredLands } from "../../services/landRegistry";
 import { truncateWalletAddress } from "../../utils/truncateAddress";
 
-function Property({ item, activeTab, onPropertyClick }) {
+function Property({ item }) {
   const navigate = useNavigate();
 
   const handleSinglePage = async (address,parcelNumber) => {
     try {
  
-      navigate(`/marketplace/${parcelNumber}`, {
+      navigate(`/assets/${parcelNumber}`, {
         state: {
           address,
           parcelNumber
@@ -24,7 +23,6 @@ function Property({ item, activeTab, onPropertyClick }) {
     }
   };
 
-  // const selectedImage = item?.landParcel?.imagePath || "";
 
   const imageData = [
     "https://i.ibb.co/vHThG3J/f1.png",
@@ -96,7 +94,6 @@ function Property({ item, activeTab, onPropertyClick }) {
               />
               <h3 className="text-sm">
                 {item.owner.ownershipType  === "individual" ? "Private owner" : `4 co-owners`}
-                {/* : `${coOwners} co-owners`} */}
               </h3>
             </div>
           </div>

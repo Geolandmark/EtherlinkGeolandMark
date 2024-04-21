@@ -41,7 +41,7 @@ export default function AppSignIn() {
       await auth.initUser(response.data.data);
       console.log(response, "ress");
 
-      navigate("/marketplace");
+      navigate("/assets");
       toast.success("Logged in successfully");
     } catch (err) {
       toast.error(err?.response?.data?.message);

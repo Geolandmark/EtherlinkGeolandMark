@@ -4,7 +4,6 @@ import {
   Marker,
   Popup,
   Polygon,
-  Circle,
 } from "react-leaflet";
 import React, { useState } from "react";
 import "leaflet/dist/leaflet.css";
@@ -12,12 +11,9 @@ import { calculatePolygonCenter } from "../utils/centerPointCoversion";
 import { STATE } from "../utils/stateConstants";
 import Logo from "../assets/dashboard/logo.svg";
 import L from "leaflet";
-import { CartesianToGeographic } from "../utils/coordinateConversion";
-import { useNavigate } from "react-router-dom";
 
 export const BaseMap = (props) => {
   const [status, setStatus] = useState(STATE.IDLE);
-  const navigate = useNavigate();
 
   let convertedCoordinates;
 
@@ -32,9 +28,8 @@ export const BaseMap = (props) => {
     });
   });
 
-  console.log(convertedCoordinates, "gdgeg");
-  let zoom = 10;
-  const location = [7.508854, 4.544375];
+  let zoom = 3;
+  const location = [40.6943, -75.24434];
 
   const icon = L.icon({
     iconUrl: Logo,
@@ -45,13 +40,7 @@ export const BaseMap = (props) => {
     shadowSize: null,
     shadowAnchor: [13, 28],
   });
-  let epcotCenter = [7.466648, 4.566644];
-  // const handleMarkerClick = (position, zoomLevel) => {
-  //   console.log(position, "lobe");
-  //   if (mapInstance) {
-  //     mapInstance.setView(position, zoomLevel);
-  //   }
-  // };
+
 
   return (
     <>
@@ -64,12 +53,10 @@ export const BaseMap = (props) => {
             zoom={zoom}
             className="h-full rounded-[40px] "
           >
-            {/* Add the map tile layer */}
             <TileLayer
               url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            {/* Add a Polygon */}
             {convertedCoordinates?.map((data, index) => {
               const cordCent = calculatePolygonCenter(
                 data.map((coord) => coord.spatial)
@@ -83,15 +70,13 @@ export const BaseMap = (props) => {
                   />
                   {data.map((attr, innerIndex) => (
                     <Marker
-                      key={attr.nonSpatial.owner.parcelNumber} // Use a unique key based on parcelNumber
+                      key={attr.nonSpatial.owner.parcelNumber} 
                       icon={icon}
-                      position={attr.spatial} // Assuming attr.spatial is correct spatial data
+                      position={attr.spatial} 
                       onClick={() =>
                         handleMarkerClick(attr.nonSpatial.owner.parcelNumber)
                       }
                     >
-                      {/* {selectedParcelId ===
-                        attr.nonSpatial.owner.parcelNumber && ( */}
                       <Popup>
                         <div
                           style={{
@@ -138,8 +123,6 @@ export const BaseMap = (props) => {
                                   {process.env.REACT_APP_NFT_CONTRACT_ADDRESS}
                                 </td>
                               </tr>
-
-                              {/* Add more rows for additional information */}
                             </tbody>
                           </table>
                           <h6 className="mt-4 text-[#009FBD]">
@@ -187,7 +170,6 @@ export const BaseMap = (props) => {
                                   {attr?.nonSpatial?.owner?.address}
                                 </td>
                               </tr>
-                              {/* Add more rows for property details */}
                             </tbody>
                           </table>
                           <h6 className="mt-4 text-[#009FBD]">
@@ -218,30 +200,17 @@ export const BaseMap = (props) => {
                                   }
                                 </td>
                               </tr>
-                              {/* Add more rows for property details */}
                             </tbody>
                           </table>
                           <div className="w-full justify-center mt-6 ml-6">
-                            {/* <button
-                              onClick={() =>
-                                handleView(
-                                  attr?.nonSpatial?.owner?.parcelNumber
-                                )
-                              }
-                              className="bg-[#009FBD] font-bold w-[45.35vw] md:w-[15.68vw] h-[4.72vh] md:rounded-[0.53rem] rounded-[0.22rem] text-white "
-                            >
-                              <h1 className="text-white">More Information</h1>
-                            </button> */}
                           </div>
                         </div>
                       </Popup>
-                      {/* )} */}
                     </Marker>
                   ))}
                 </React.Fragment>
               );
             })}
-            {/* Add a marker */}
           </MapContainer>
         </div>
       )}
@@ -250,7 +219,7 @@ export const BaseMap = (props) => {
 };
 
 export const SingleBaseMap = ({ data }) => {
-  const zoom = 24;
+  const zoom = 14;
   const icon = L.icon({
     iconUrl: Logo,
     iconSize: [26, 26],

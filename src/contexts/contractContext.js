@@ -1,12 +1,12 @@
-import { useState, useContext, createContext, useEffect, useRef } from "react";
+import { useState, useContext, createContext, useRef } from "react";
 import Web3 from "web3";
 import abi1 from "../contractFIle/AssetRegistry.json";
 import abi2 from "../contractFIle/GeoToken.json";
 import { pinAssetOnIPFs, retrieveDataFromPinata } from "../services/pinata";
 import { STATE } from "../utils/stateConstants";
 
-const AuthContext = createContext();
-export const AuthProvider = ({ children }) => {
+const ContractContext = createContext();
+export const ContractProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(null);
@@ -84,8 +84,6 @@ export const AuthProvider = ({ children }) => {
           `https://${ipfs.IpfsHash}`
         )
         .send({ from: data.ownership.address, type: 0 });
-
-      console.log("Transaction sent:", tx);
       return tx;
     } catch (error) {
       console.error("Error sending transaction:", error);
@@ -124,8 +122,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const mintGeoToken = async (address, parcelId) => {
-    console.log(">>>>>>");
-
     try {
       const cid = await fetchIpfsHashByParcelId(address, parcelId);
       const url = `${process.env.REACT_APP_PINATA_GATEWAY_URL}/ipfs/${cid}?pinataGatewayToken=${process.env.REACT_APP_PINATA_GATEWAY_TOKEN}`;
@@ -133,7 +129,6 @@ export const AuthProvider = ({ children }) => {
         .safeMint(address, parcelId, url)
         .send({ from: address, type: 0 });
 
-      console.log("Asset Minted Successfully:", tx);
       return tx;
     } catch (error) {
       console.error("Error sending transaction:..", error);
@@ -148,13 +143,9 @@ export const AuthProvider = ({ children }) => {
 
       const result = await contractInstance1.methods.getAllParcels().call();
 
-      console.log(result, "chainRes");
-
       if (Array.isArray(result)) {
         const promiseArray = result.map(async (item, index) => {
-          console.log(`Pinned item ${index + 1}:`, item);
           const allData = await retrieveDataFromPinata(item);
-          console.log(allData, "we>");
           handleStatus(STATE.SUCCESS);
           return allData.data;
         });
@@ -163,10 +154,6 @@ export const AuthProvider = ({ children }) => {
 
         data = [...data, ...resolvedData];
 
-        console.log(data, ",,,,,");
-
-        console.log("All data retrieved:", data);
-
         return data;
       }
     } catch (error) {
@@ -175,28 +162,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
- const fetchMapData = async () => {
+  const fetchMapData = async () => {
     let data = [];
     try {
       handleStatus(STATE.LOADING);
 
       const result = await contractInstance1.methods.getAllParcels().call();
-  
-      console.log(result, "chainRes");
-  
+
       if (Array.isArray(result)) {
         const promiseArray = result.map(async (item, index) => {
-          console.log(`Pinned item ${index + 1}:`, item);
-    
           const allData = await retrieveDataFromPinata(item);
           handleStatus(STATE.SUCCESS);
-          return allData.data; 
+          return allData.data;
         });
-  
+
         const resolvedData = await Promise.all(promiseArray);
-  
+
         data = [...data, ...resolvedData];
-  
+
         return data;
       }
     } catch (error) {
@@ -205,12 +188,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
- const getTokenURI = async (tokenId) => {
-   
+  const getTokenURI = async (tokenId) => {
     try {
-      const result = await contractInstance2.methods
-        .tokenURI(tokenId)
-        .call();
+      const result = await contractInstance2.methods.tokenURI(tokenId).call();
 
       handleStatus(STATE.SUCCESS);
 
@@ -251,15 +231,12 @@ export const AuthProvider = ({ children }) => {
 
   const disconnectWallet = async () => {
     try {
-      // Check if the provider supports closing the connection
       if (web3.currentProvider && web3.currentProvider.close) {
-        // Close the provider's connection
         await web3.currentProvider.close();
         console.log("Wallet disconnected successfully");
-  
+
         setWalletAddress(null);
-        // Remove item from local storage (example: 'walletAddress')
-        walletAddressRef.current = null
+        walletAddressRef.current = null;
         localStorage.removeItem("walletAddress");
         console.log("Wallet address removed from local storage");
       } else {
@@ -267,12 +244,11 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error disconnecting wallet:", error);
-      // Handle error appropriately
     }
   };
 
   return (
-    <AuthContext.Provider
+    <ContractContext.Provider
       value={{
         initUser,
         logout,
@@ -299,11 +275,11 @@ export const AuthProvider = ({ children }) => {
         status,
         fetchMapData,
         disconnectWallet,
-        getTokenURI
+        getTokenURI,
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </ContractContext.Provider>
   );
 };
-export const useAuth = () => useContext(AuthContext);
+export const useContract = () => useContext(ContractContext);

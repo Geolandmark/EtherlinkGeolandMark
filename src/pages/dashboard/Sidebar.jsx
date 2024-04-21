@@ -23,7 +23,7 @@ const Sidebar = () => {
   const handleTabClick = (id) => {
     setActiveTab(id);
     if (id === 1) {
-      navigate(`/marketplace`);
+      navigate(`/assets`);
     } else if (id === 2) {
       navigate(`/dashboard/1`);
     } else if (id === 3) {
@@ -77,11 +77,11 @@ const Sidebar = () => {
   return (
     <div className=" relative flex flex-col justify-between h-full  ">
       {isExpanded ? (
-        <Link to="/marketplace">
+        <Link to="/assets">
           <img src={logo2} alt="" className=" mb-[8.75vh] w-[17.45vw] " />
         </Link>
       ) : (
-        <Link to="/marketplace">
+        <Link to="/assets">
           <img src={logo} alt="" className="mb-[8.75vh] w-[2.08vw] " />
         </Link>
       )}

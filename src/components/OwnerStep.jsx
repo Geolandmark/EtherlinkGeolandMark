@@ -6,21 +6,8 @@ import { STATE } from "../utils/stateConstants";
 import { general_input_styles } from "../utils";
 import { label_styles } from "../utils";
 import { input_container_styles } from "../utils";
-import Upload from "../assets/upload.svg";
-import { useMedia } from "../contexts/mediaContex";
-import MediaLoader from "./fileLoader";
-import { Modal2 } from "../utils/arrayLists";
-import { ZoningCategory } from "../json/zoningCategory";
-import { AllowedLandUse } from "../json/zoningCategory";
-import { ProhibitedLandUse } from "../json/zoningCategory";
-import useClickOutsideCancel from "../hooks/clickOutsideHook";
-import { uploadLangistryMedia } from "../utils/fileBase";
-import { sendFileToIPFS } from "../utils/pinata";
-import { getMediaRegistry } from "../utils/fileBase";
 
 export const OwnerStep = ({ saveOwnerData, ownerCurrentState, nextStep }) => {
-  const { cOf, uploadCof, surveyPlan, uploadSurveyPlan } = useMedia();
-
   const ownershipRef = useRef("");
   const [status, setStatus] = useState(STATE.IDLE);
   const [ownershipType, setOwnershipType] = useState("");
@@ -30,7 +17,6 @@ export const OwnerStep = ({ saveOwnerData, ownerCurrentState, nextStep }) => {
     setOwnershipType(e.target.value);
   };
 
-  
   const step1 = async (values, _methods) => {
     setStatus(STATE.LOADING);
     const userObj = {
@@ -44,7 +30,6 @@ export const OwnerStep = ({ saveOwnerData, ownerCurrentState, nextStep }) => {
     };
 
     if (userObj) {
-      console.log(userObj,"llll")
       saveOwnerData(userObj);
       nextStep();
     }
@@ -254,180 +239,6 @@ export const OwnerStep = ({ saveOwnerData, ownerCurrentState, nextStep }) => {
                 </div>
               )}
           </div>
-          {/* <div>
-            <div className="flex flex-col gap-2 cursor-pointer">
-              <div className="text-zinc-400 text-base font-semibold leading-[0.9vw]">
-                Upload C of O
-              </div>
-              <div>
-                <label htmlFor="fileInput1" className="cursor-pointer">
-                  <div className="flex flex-col gap-2 justify-center items-center w-full h-[18.8889vh] bg-zinc-900 rounded-[10px] border border-zinc-400 border-dashed">
-                    <img src={Upload} alt="upload" className="w-[2.3vw]" />
-                    <div className="text-cyan-600 text-lg font-semibold underline leading-tight">
-                      Select a File to Upload
-                    </div>
-                    <div className="text-zinc-400 text-base font-normal leading-[0.9vw]">
-                      Or Drag and Drop it here
-                    </div>
-                  </div>
-                </label>
-                <input
-                  id="fileInput1"
-                  type="file"
-                  multiple
-                  style={{ display: "none" }}
-                  onChange={uploadCof}
-                />
-              </div>
-            </div>
-
-            <div>
-              <MediaLoader media={cOf} />
-            </div>
-          </div> */}
-
-          {/* <div>
-            <div className="flex flex-col gap-2 cursor-pointer">
-              <div className="text-zinc-400 text-base font-semibold leading-[0.9vw]">
-                Upload Survey Plan
-              </div>
-              <div>
-                <label htmlFor="fileInput2" className="cursor-pointer">
-                  <div className="flex flex-col gap-2 justify-center items-center w-full h-[18.8889vh] bg-zinc-900 rounded-[10px] border border-zinc-400 border-dashed">
-                    <img src={Upload} alt="upload" className="w-[2.3vw]" />
-                    <div className="text-cyan-600 text-lg font-semibold underline leading-tight">
-                      Select a File to Upload
-                    </div>
-                    <div className="text-zinc-400 text-base font-normal leading-[0.9vw]">
-                      Or Drag and Drop it here
-                    </div>
-                  </div>
-                </label>
-                <input
-                  id="fileInput2"
-                  type="file"
-                  multiple
-                  style={{ display: "none" }}
-                  onChange={uploadSurveyPlan}
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                />
-              </div>
-            </div>
-            <div>
-              <MediaLoader media={surveyPlan} />
-            </div>
-          </div> */}
-
-          {/* <div className="w-full flex flex-wrap justify-between gap-2 ">
-            <div className="w-full flex flex-wrap justify-between gap-2  z-0">
-              <div className="relative">
-                <div className="w-[14vw]">
-                  <label
-                    htmlFor="zoningCategory"
-                    className="mb-1 text-base font-bold text-[#B9B9B9]"
-                  >
-                    Zoning Category
-                  </label>
-                  <div
-                    onClick={() => {
-                      handleZoneCat();
-                    }}
-                    className={`${general_input_styles} cursor-pointer flex justify-start items-center w-[15vw] truncate overflow-x-auto`}
-                  >
-                    {zoneCategory && zoneCategory.length > 0
-                      ? zoneCategory.slice().reverse().join(", ")
-                      : "Zoning Category"}
-                  </div>
-                </div>
-                {isZoneCat && (
-                  <Modal2
-                    arrayState={zoneCategory}
-                    setArrayState={setZoneCategory}
-                    listedData={ZoningCategory}
-                  />
-                )}
-              </div>
-
-              <div className="w-[14vw]">
-                <label
-                  htmlFor="lotSize"
-                  className="mb-1 text-base font-bold text-[#B9B9B9]"
-                >
-                  Minimum Plot Size
-                </label>
-                <input
-                  type="text"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  placeholder="Minimum Lot Size"
-                  name="lotSize"
-                  value={formik.values.lotSize}
-                  className={general_input_styles}
-                />
-                {formik.touched.lotSize && formik.errors.lotSize && (
-                  <div className="inline-block text-red-600">
-                    {formik.errors.lotSize}
-                  </div>
-                )}
-              </div>
-
-              <div className="relative">
-                <div className="w-[14vw]">
-                  <label
-                    htmlFor="allowedLandUse"
-                    className="mb-1 text-base font-bold text-[#B9B9B9]"
-                  >
-                    Allowed Land Use
-                  </label>
-                  <div
-                    onClick={() => {
-                      handleLandUse();
-                    }}
-                    className={`${general_input_styles} cursor-pointer flex justify-start items-center w-[15vw] truncate overflow-x-auto`}
-                  >
-                    {allowedLandUse && allowedLandUse.length > 0
-                      ? allowedLandUse.slice().reverse().join(", ")
-                      : "Allowed Land Use"}
-                  </div>
-                </div>
-                {isLandUse && (
-                  <Modal2
-                    arrayState={allowedLandUse}
-                    setArrayState={setAllowedLandUse}
-                    listedData={AllowedLandUse}
-                  />
-                )}
-              </div>
-
-              <div className="relative">
-                <div className="w-[14vw]">
-                  <label
-                    htmlFor="prohibitedLandUse"
-                    className="mb-1 text-base font-bold text-[#B9B9B9]"
-                  >
-                    Prohibited Land Use
-                  </label>
-                  <div
-                    onClick={() => {
-                      handleProbUse();
-                    }}
-                    className={`${general_input_styles} cursor-pointer flex justify-start items-center w-[15vw] truncate overflow-x-auto`}
-                  >
-                    {prohibitedLandUse && prohibitedLandUse.length > 0
-                      ? prohibitedLandUse.slice().reverse().join(", ")
-                      : "Prohibited Land Use"}
-                  </div>
-                </div>
-                {isProbUse && (
-                  <Modal2
-                    arrayState={prohibitedLandUse}
-                    setArrayState={setProhibitedLandUse}
-                    listedData={ProhibitedLandUse}
-                  />
-                )}
-              </div>
-            </div>
-          </div> */}
 
           <div className="flex justify-center mt-6">
             <button

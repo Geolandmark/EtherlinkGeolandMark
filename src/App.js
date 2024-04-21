@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/landing/Index";
 import Prompt from "./pages/auth/Prompt";
 import MarketIndex from "./pages/marketplace/Index";
-import { AuthProvider } from "./contexts/authContext";
-import { useAuth } from "./contexts/authContext";
+import { ContractProvider } from "./contexts/contractContext";
+import { useContract } from "./contexts/contractContext";
 import ProductDescription from "./pages/marketplace/ProductDescription";
 import Dashboard from "./pages/dashboard/Dashboard";
 import RegisterLand from "./pages/dashboard/RegisterLand";
@@ -15,43 +15,38 @@ import BaseMap from "./pages/map/BaseMap";
 import { SingleBaseMap } from "./lib/leaflets";
 
 function App() {
-  const auth = useAuth();
+  const auth = useContract();
 
   useEffect(() => {
     const accountWasChanged = (accounts) => {
-      console.log(accounts, "account....");
       const newAddress = accounts[0];
-      auth.changeAddress(newAddress); // Update wallet address in your auth system
+      auth.changeAddress(newAddress);
     };
 
     const clearAccount = () => {
 
-      auth.setWalletAddress(null); // Clear wallet address in your auth system
+      auth.setWalletAddress(null); 
       console.log("clearAccount");
     };
 
     if (window.ethereum) {
-      // Listen for account changes and disconnect event
+
       window.ethereum.on("accountsChanged", accountWasChanged);
       window.ethereum.on("disconnect", clearAccount);
 
-      // Request accounts initially
       window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((accounts) => {
-          console.log("Initial accounts:", accounts);
           const initialAddress = accounts[0];
-          auth.setWalletAddress(initialAddress); // Set initial wallet address
+          auth.setWalletAddress(initialAddress);
         })
         .catch((error) => {
           console.error("Error requesting accounts:", error);
-          // Handle error appropriately
         });
     } else {
       console.warn("window.ethereum is not available");
     }
 
-    // Cleanup: Remove event listeners when component unmounts
     return () => {
       if (window.ethereum) {
         window.ethereum.off("accountsChanged", accountWasChanged);
@@ -65,16 +60,16 @@ function App() {
   }
 
   return (
-    <AuthProvider>
+    <ContractProvider>
       <DashboardProvider>
         <Router>
           <div className="font-whyte">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/prompt" element={<Prompt />} />
-              <Route path="/marketplace" element={<MarketIndex />} />
+              <Route path="/assets" element={<MarketIndex />} />
               <Route path="/map" element={<BaseMap />} />
-              <Route path="/marketplace/:id" element={<ProductDescription />} />
+              <Route path="/assets/:id" element={<ProductDescription />} />
               <Route
                 path="/dashboard/1"
                 element={
@@ -111,7 +106,7 @@ function App() {
           </div>
         </Router>
       </DashboardProvider>
-    </AuthProvider>
+    </ContractProvider>
   );
 }
 

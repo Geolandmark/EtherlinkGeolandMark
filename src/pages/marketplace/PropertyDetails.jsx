@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
-import map from "../../assets/marketplace/map.svg";
-import info from "../../assets/marketplace/infob.svg";
-import { SingleBaseMap } from "../../lib/leaflets";
-import { useProperty } from "../../contexts/propertyContext";
-import { CartesianToGeographic } from "../../utils/coordinateConversion";
 import { STATE } from "../../utils/stateConstants";
-import { useAuth } from "../../contexts/authContext";
-import { truncateAddress } from "../../utils/truncateAddress";
+import { useContract } from "../../contexts/contractContext";
+
 
 function PropertyDetails(props) {
   const [parcel, setParcel] = useState();
-  const { fetchDataByParcelId, handleStatus, status } = useAuth();
+  const { status } = useContract();
   console.log(parcel, "uru");
 
   useEffect(() => {
@@ -283,22 +278,6 @@ function PropertyDetails(props) {
                       </div>
                     </div>
                     <div>
-                      {/* <div className=" mb-[2.13vh] ">
-                        <h5 className="text-[#865DFF] font-medium text-sm ">
-                          ALLOWED LAND USE
-                        </h5>
-                        <p className="text-lg text-[#B9B9B9] font-bold ">
-                          {singleSelection?.allowedLandUse || "None"}
-                        </p>
-                      </div> */}
-                      {/* <div className="">
-                        <h5 className="text-[#865DFF] font-medium text-sm flex items-center gap-2 ">
-                          PROHIBITED LAND USE
-                        </h5>
-                        <p className="text-lg text-[#B9B9B9] font-bold ">
-                          {singleSelection?.prohibitedLandUse || "None"}
-                        </p>
-                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -320,7 +299,6 @@ function PropertyDetails(props) {
                           Email Address
                         </h5>
                         <p className="text-lg text-[#B9B9B9]">
-                          {/* {parcel?.ownership?.emailAddress} */}
                           --Confidential--
                         </p>
                       </div>
@@ -331,7 +309,6 @@ function PropertyDetails(props) {
                           Place Of Birth
                         </h5>
                         <p className="texttext-[#B9B9B9] ">
-                          {/* {parcel?.ownership?.placeOfBirth || "null"} */}
                           --Confidential--
                         </p>
                       </div>
@@ -351,7 +328,6 @@ function PropertyDetails(props) {
                           State Of Origin
                         </h5>
                         <p className="texttext-[#B9B9B9] ">
-                          {/* {parcel?.ownership?.stateOfOrigin || "null"} */}
                           --Confidential--
                         </p>
                       </div>
@@ -379,7 +355,6 @@ function PropertyDetails(props) {
                           Contact Information
                         </h5>
                         <p className="texttext-[#B9B9B9] ">
-                          {/* {parcel?.ownership?.mobileNumber || "null"} */}
                           --Confidential--
                         </p>
                       </div>
@@ -402,7 +377,6 @@ function PropertyDetails(props) {
                           TokenId
                         </h5>
                         <p className="text-lg text-[#B9B9B9]">
-                          {/* {parcel?.ownership?.emailAddress} */}
                           {parcel?.owner.parcelNumber}
                         </p>
                       </div>
@@ -413,7 +387,6 @@ function PropertyDetails(props) {
                           smart contract Address
                         </h5>
                         <p className="texttext-[#B9B9B9] ">
-                          {/* {parcel?.ownership?.placeOfBirth || "null"} */}
                           {process.env.REACT_APP_NFT_CONTRACT_ADDRESS}
                         </p>
                       </div>
@@ -431,7 +404,6 @@ function PropertyDetails(props) {
                           token URI
                         </h5>
                         <p className="texttext-[#B9B9B9] ">
-                          {/* {parcel?.ownership?.placeOfBirth || "null"} */}
                           {props.tokenURI}
                         </p>
                       </div>
@@ -443,7 +415,6 @@ function PropertyDetails(props) {
               )}
             </div>
           </div>
-          <div>{/* <SingleBaseMap singleSelection={parcel} /> */}</div>
         </div>
       )}
     </>

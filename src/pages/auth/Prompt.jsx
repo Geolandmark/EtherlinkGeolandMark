@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import vec from "../../assets/vec.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { STATE } from "../../utils/stateConstants";
 import { toast } from "react-toastify";
-import { useAuth } from "../../contexts/authContext";
+import { useContract } from "../../contexts/contractContext";
 import LoadingSpinner from "../../utils/spinner";
 
-function Prompt({ onchainData }) {
+function Prompt() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { userData, mintGeoToken, handleStatus, status } = useAuth();
-  const path = location.pathname;
+  const {mintGeoToken, handleStatus, status } = useContract();
   const data = location.state;
 
   const handleMintToken = async () => {
@@ -19,7 +18,7 @@ function Prompt({ onchainData }) {
     try {
       await mintGeoToken(data.address, data.parcelNumber);
 
-      navigate("/marketplace");
+      navigate("/assets");
       handleStatus(STATE.SUCCESS);
 
       toast.success("Asset Minted successfully!");

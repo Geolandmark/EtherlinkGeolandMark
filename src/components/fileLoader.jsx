@@ -13,7 +13,6 @@ export default function MediaLoader({media})  {
                 alt="Uploaded Image"
               />
             ) : (
-              // Render if there are more than one images
               media.imageUrl.map((url, index) => (
                 <img
                   key={index}

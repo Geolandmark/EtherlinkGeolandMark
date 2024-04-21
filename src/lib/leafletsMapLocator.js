@@ -1,24 +1,12 @@
 import {
     MapContainer,
     TileLayer,
-    Marker,
-    Popup,
-    Polygon,
-    Circle,
     useMapEvents
   } from "react-leaflet";
-  import React, { useState, useEffect, useRef } from "react";
+  import React, { useEffect} from "react";
   import "leaflet/dist/leaflet.css";
-  import { calculatePolygonCenter } from "../utils/centerPointCoversion";
-  import Logo from "../assets/dashboard/logo.svg";
-  import Point from "../assets/marketplace/point.svg";
   import L from "leaflet";
-  import { useProperty } from "../contexts/propertyContext";
-  import { CartesianToGeographic } from "../utils/coordinateConversion";
-  import {
-    getRegisteredLands,
-    getSingleRegisteredLands,
-  } from "../services/landRegistry";
+
 
 
 export const ExtendedBaseMap = () => {

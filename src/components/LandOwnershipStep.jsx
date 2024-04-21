@@ -9,9 +9,9 @@ import { general_input_styles } from "../utils";
 import { label_styles } from "../utils";
 import { input_container_styles } from "../utils";
 import { useMedia } from "../contexts/mediaContex";
-import { useAuth } from "../contexts/authContext";
+import { useContract } from "../contexts/contractContext";
 import { pinFileToIpfs } from "../services/pinata";
-import { generateTokenWithAddress } from "../utils/generateTokenwithAddress";
+import { useMultiStepForm } from "./UseMultiStepForm";
 
 export const LandOwnerShipStep = ({
   prevStep,
@@ -21,40 +21,15 @@ export const LandOwnerShipStep = ({
   landParcelCurrentState,
 }) => {
   const navigate = useNavigate();
-  const {
-    uploadPropertyVisualization,
-    propertyVisualization,
-    cOf,
-    surveyPlan,
-    cOfMulter,
-    surveyPlanMulter,
-    imageMulter,
-  } = useMedia();
+  const { propertyVisualization } = useMedia();
 
   const [isNegotiable, setIsNegotiable] = useState(true);
 
   const gateWayUrl = process.env.REACT_APP_PINATA_GATEWAY_URL;
   const pinataGatewayToken = process.env.REACT_APP_PINATA_GATEWAY_TOKEN;
 
-  const {
-    walletAddress,
-    createContractAsset,
-    saveOwnerOnchain,
-    saveParcelAssetOnchain,
-    address,
-    fetchDataByIpfsHash,
-    fetchAllData,
-    onChainStatus,
-    handleChainData,
-    onChainData,
-    handleStatus,
-    status,
-    isTxn,
-  } = useAuth();
-
-  const negotiation = () => {
-    setIsNegotiable((prevState) => !prevState);
-  };
+  const { saveParcelAssetOnchain, address, onChainStatus, handleStatus } =
+    useContract();
 
   const step3 = async (values, _methods) => {
     handleStatus(STATE.LOADING);
@@ -131,6 +106,8 @@ export const LandOwnerShipStep = ({
 
       handleStatus(STATE.SUCCESS);
 
+      useMultiStepForm(1)
+
       toast.success("Asset uploaded onchain successfully!");
     } catch (err) {
       toast.error(err || "An Error has occured. Please try again.");
@@ -204,7 +181,6 @@ export const LandOwnerShipStep = ({
                 <option value="Mrs">Mrs</option>
                 <option value="Miss">Miss</option>
               </select>
-              {/* Display error message for landUse */}
               {formik.touched.title && formik.errors.title && (
                 <div className="text-red-600  w-[15vw]">
                   {formik.errors.title}
@@ -315,36 +291,6 @@ export const LandOwnerShipStep = ({
               )}
             </div>
           </div>
-
-          {/* <div className="mt-12">
-          <div className="flex flex-col gap-2 cursor-pointer">
-            <div className="text-zinc-400 text-base font-semibold leading-[0.9vw]">
-              Upload imgaes
-            </div>
-            <div>
-              <label htmlFor="fileInput3" className="cursor-pointer">
-                <div className="flex flex-col gap-2 justify-center items-center w-full h-[18.8889vh] bg-zinc-900 rounded-[10px] border border-zinc-400 border-dashed">
-                  <img src={Upload} alt="upload" className="w-[2.3vw]" />
-                  <div className="text-cyan-600 text-lg font-semibold underline leading-tight">
-                    Select a File to Upload
-                  </div>
-                  <div className="text-zinc-400 text-base font-normal leading-[0.9vw]">
-                    Or Drag and Drop it here
-                  </div>
-                </div>
-              </label>
-              <input
-                id="fileInput3"
-                type="file"
-                name="images"
-                multiple
-                style={{ display: "none" }}
-                onChange={uploadPropertyVisualization}
-              />
-            </div>
-          </div>
-          <MediaLoader media={propertyVisualization} />
-        </div> */}
 
           <div className="w-full flex mt-6 flex-wrap justify-between gap-2 ">
             <div className="w-[14vw]">

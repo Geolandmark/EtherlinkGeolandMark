@@ -6,10 +6,6 @@ import * as Yup from "yup";
 import Upload from "../assets/upload.svg";
 import { useMedia } from "../contexts/mediaContex";
 import MediaLoader from "./fileLoader";
-import { general_input_styles } from "../utils";
-import { label_styles } from "../utils";
-import { input_container_styles } from "../utils";
-import { pinFileToIpfs } from "../services/pinata";
 const formData = new FormData();
 
 export const ParcelStep = ({
@@ -128,7 +124,7 @@ export const ParcelStep = ({
       py4:
         landParcelCurrentState?.geographicCoordinates?.[3]?.point4?.py ||
         landParcelCurrentState?.geographicCoordinates?.[0]?.point1?.py,
-      parcelImage: assetImage
+      parcelImage: assetImage,
     },
     validationSchema: Yup.object({
       px1: Yup.string().required("This field is required."),
@@ -181,7 +177,6 @@ export const ParcelStep = ({
                   onChange={saveAssetImage}
                   onBlur={formik.handleBlur}
                 />
-                {/* Display error message for px1 */}
                 {!assetImage ? (
                   <div className="text-red-600">
                     {formik.errors.parcelImage}
@@ -331,7 +326,7 @@ export const ParcelStep = ({
                         value={formik.values.px1}
                         className="w-[14.1146vw] px-2 text-[#1B1B1B] text-sm placeholder:text-[#1B1B1B] h-[4.91vh] rounded-[7px] bg-zinc-300 "
                       />
-                      {/* Display error message for px1 */}
+
                       {formik.touched.px1 && formik.errors.px1 && (
                         <div className="text-red-600">{formik.errors.px1}</div>
                       )}
@@ -346,7 +341,7 @@ export const ParcelStep = ({
                         value={formik.values.py1}
                         className="w-[14.1146vw] px-2 text-[#1B1B1B] text-sm placeholder:text-[#1B1B1B] h-[4.91vh] rounded-[7px] bg-zinc-300 "
                       />
-                      {/* Display error message for py1 */}
+
                       {formik.touched.py1 && formik.errors.py1 && (
                         <div className="text-red-600">{formik.errors.py1}</div>
                       )}
@@ -365,7 +360,6 @@ export const ParcelStep = ({
                         value={formik.values.px2}
                         className=" w-[14.1146vw] px-2 text-[#1B1B1B] text-sm placeholder:text-[#1B1B1B] h-[4.91vh] rounded-[7px] bg-zinc-300 "
                       />
-                      {/* Display error message for px2 */}
                       {formik.touched.px2 && formik.errors.px2 && (
                         <div className="text-red-600">{formik.errors.px2}</div>
                       )}
@@ -378,7 +372,6 @@ export const ParcelStep = ({
                         value={formik.values.py2}
                         className=" w-[14.1146vw] px-2 text-[#1B1B1B] text-sm placeholder:text-[#1B1B1B] h-[4.91vh] rounded-[7px] bg-zinc-300 "
                       />
-                      {/* Display error message for py2 */}
                       {formik.touched.py2 && formik.errors.py2 && (
                         <div className="text-red-600">{formik.errors.py2}</div>
                       )}
@@ -397,7 +390,6 @@ export const ParcelStep = ({
                         value={formik.values.px3}
                         className=" w-[14.1146vw] px-2 text-[#1B1B1B] text-sm placeholder:text-[#1B1B1B] h-[4.91vh] rounded-[7px] bg-zinc-300 "
                       />
-                      {/* Display error message for px3 */}
                       {formik.touched.px3 && formik.errors.px3 && (
                         <div className="text-red-600">{formik.errors.px3}</div>
                       )}
@@ -412,7 +404,7 @@ export const ParcelStep = ({
                         value={formik.values.py3}
                         className=" w-[14.1146vw] px-2 text-[#1B1B1B] text-sm placeholder:text-[#1B1B1B] h-[4.91vh] rounded-[7px] bg-zinc-300 "
                       />
-                      {/* Display error message for py3 */}
+
                       {formik.touched.py3 && formik.errors.py3 && (
                         <div className="text-red-600">{formik.errors.py3}</div>
                       )}
@@ -431,7 +423,7 @@ export const ParcelStep = ({
                         value={formik.values.px4}
                         className=" w-[14.1146vw]  px-2 text-[#1B1B1B] text-sm placeholder:text-[#1B1B1B] h-[4.91vh] rounded-[7px] bg-zinc-300 "
                       />
-                      {/* Display error message for px4 */}
+
                       {formik.touched.px4 && formik.errors.px4 && (
                         <div className="text-red-600">{formik.errors.px4}</div>
                       )}
@@ -446,7 +438,7 @@ export const ParcelStep = ({
                         value={formik.values.py4}
                         className=" w-[14.1146vw] px-2 text-[#1B1B1B] text-sm placeholder:text-[#1B1B1B] h-[4.91vh] rounded-[7px] bg-zinc-300 "
                       />
-                      {/* Display error message for py4 */}
+
                       {formik.touched.py4 && formik.errors.py4 && (
                         <div className="text-red-600">{formik.errors.py4}</div>
                       )}
@@ -467,7 +459,7 @@ export const ParcelStep = ({
                       value={formik.values.px1}
                       className="w-[14.1146vw] px-2 text-[#1B1B1B] text-sm placeholder:text-[#1B1B1B] h-[4.91vh] rounded-[7px] bg-zinc-300 "
                     />
-                    {/* Display error message for px1 */}
+
                     {formik.touched.px1 && formik.errors.px1 && (
                       <div className="text-red-600">{formik.errors.px1}</div>
                     )}
@@ -482,7 +474,7 @@ export const ParcelStep = ({
                       value={formik.values.py1}
                       className="w-[14.1146vw] px-2 text-[#1B1B1B] text-sm placeholder:text-[#1B1B1B] h-[4.91vh] rounded-[7px] bg-zinc-300 "
                     />
-                    {/* Display error message for py1 */}
+
                     {formik.touched.py1 && formik.errors.py1 && (
                       <div className="text-red-600">{formik.errors.py1}</div>
                     )}
@@ -494,7 +486,6 @@ export const ParcelStep = ({
           {/* ... */}
         </div>
 
-        {/* Submit and Back buttons */}
         <div className="flex justify-around mt-6 py-12">
           <button
             onClick={prevStep}

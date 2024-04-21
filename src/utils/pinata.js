@@ -19,7 +19,6 @@ export const sendFileToIPFS = async (image,parcelId) => {
 
     toast.success(`${ImgHash} success while uploading nft details. Try again later`);
     console.log(ImgHash);
-    //Take a look at your Pinata Pinned section, you will see a new file added to you list.
   } catch (error) {
     toast.error("Error sending File to IPFS: ");
     console.log("Error sending File to IPFS: ");

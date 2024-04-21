@@ -30,6 +30,7 @@ contract AssetRegistry {
     uint256 public parcelDocumentsCounter;
 
     uint256 public editCost = 100000000000000 wei;
+
     event OwnerInformationSaved(
         address indexed ownerAddress,
         uint256 indexed ownerId,
@@ -50,10 +51,8 @@ contract AssetRegistry {
             "Owner profile already exists"
         );
 
-        // Increment the owner ID counter
         ownerIdCounter++;
 
-        // Create a new OwnerInformation struct
         OwnerInformation memory owner = OwnerInformation({
             id: ownerIdCounter,
             fullName: _fullName,
@@ -64,10 +63,8 @@ contract AssetRegistry {
             initialized: true
         });
 
-        // Save the owner information to the mapping
         walletInformation[_address] = owner;
 
-        // Emit an event to notify external listeners about the saved owner information
         emit OwnerInformationSaved(
             _address,
             ownerIdCounter,
@@ -76,35 +73,10 @@ contract AssetRegistry {
         );
     }
 
-    function getAllParcels() public view returns (string[] memory) {
-        string[] memory ipfsHashes = new string[](parcels.length);
-
-        for (uint256 i = 0; i < parcels.length; i++) {
-            ipfsHashes[i] = parcels[i].ipfsHash;
-        }
-
-        return ipfsHashes;
-    }
-
-    function getOwnerInformation(
+      function getOwnerInformation(
         address _address
     ) public view returns (OwnerInformation memory) {
         return walletInformation[_address];
-    }
-
-    function getSingleParcelIpfsHash(
-        address _owner,
-        uint256 _parcelId
-    ) public view returns (string memory) {
-        ParcelInformation[] storage ownerParcels = userParcels[_owner];
-
-        for (uint256 i = 0; i < ownerParcels.length; i++) {
-            if (ownerParcels[i].parcelId == _parcelId) {
-                return ownerParcels[i].ipfsHash;
-            }
-        }
-
-        revert("Parcel not found for the specified owner and parcel ID");
     }
 
     function saveParcelInformation(
@@ -115,6 +87,7 @@ contract AssetRegistry {
         bool _isVerify,
         string memory _assetUrl
     ) public {
+
         parcelDocumentsCounter++;
 
         ParcelInformation memory parcel = ParcelInformation({
@@ -134,6 +107,32 @@ contract AssetRegistry {
         address _owner
     ) public view returns (ParcelInformation[] memory) {
         return userParcels[_owner];
+    }
+
+        function getAllParcels() public view returns (string[] memory) {
+        string[] memory ipfsHashes = new string[](parcels.length);
+
+        for (uint256 i = 0; i < parcels.length; i++) {
+            ipfsHashes[i] = parcels[i].ipfsHash;
+        }
+
+        return ipfsHashes;
+    }
+
+
+    function getSingleParcelIpfsHash(
+        address _owner,
+        uint256 _parcelId
+    ) public view returns (string memory) {
+        ParcelInformation[] storage ownerParcels = userParcels[_owner];
+
+        for (uint256 i = 0; i < ownerParcels.length; i++) {
+            if (ownerParcels[i].parcelId == _parcelId) {
+                return ownerParcels[i].ipfsHash;
+            }
+        }
+
+        revert("Parcel not found for the specified owner and parcel ID");
     }
 
     function getParcelById(

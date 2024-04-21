@@ -8,7 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import App from "./App.js";
 import { PropertyProvider } from "./contexts/propertyContext";
-import { AuthProvider } from "./contexts/authContext";
+import { ContractProvider } from "./contexts/contractContext.js";
 import { StepperProvider } from "./contexts/stepperContext";
 import { MediaProvider } from "./contexts/mediaContex";
 
@@ -48,7 +48,7 @@ root.render(
       </div>
     ) : (
       <div className="lg:block hidden md:hidden">
-        <AuthProvider>
+        <ContractProvider>
           <MediaProvider>
             <PropertyProvider>
               <StepperProvider>
@@ -56,7 +56,7 @@ root.render(
               </StepperProvider>
             </PropertyProvider>
           </MediaProvider>
-        </AuthProvider>
+        </ContractProvider>
         <ToastContainer
         position="top-right" 
         autoClose={5000} 

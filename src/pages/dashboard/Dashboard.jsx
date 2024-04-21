@@ -4,26 +4,17 @@ import Header from "./Header";
 import { useStepper } from "../../contexts/stepperContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Modal } from "../../utils/arrayLists";
-import Prompt from "../auth/Prompt";
-import { useAuth } from "../../contexts/authContext";
+import { useContract } from "../../contexts/contractContext";
 import LoadingSpinner from "../../utils/spinner";
 import { STATE } from "../../utils/stateConstants";
 
 function Dashboard({ children }) {
   const { stepper } = useStepper();
-  const [zoneCategory, setZoneCategory] = useState([]);
-  const [isZoneCat, setIsZoneCat] = useState(false);
-  const handleZoneCat = () => {
-    setIsZoneCat((prevState) => !prevState);
-  };
   useEffect(() => {
     window.scrollTo(2, 3);
   }, [stepper]);
-  const { onChainData, isTxn, status } = useAuth();
+  const { status } = useContract();
 
-
-  console.log("soyinka", onChainData);
 
   return (
     <>
@@ -41,12 +32,6 @@ function Dashboard({ children }) {
 
             <div className="relative w-full overflow-y-auto ">
               {status !== STATE.LOADING && <div>{children}</div>}
-              {/* <Modal
-            handleSelection={handleZoneCat}
-            arrayState={zoneCategory}
-            setArrayState={setZoneCategory}
-            listedData={["a", "b","c..........."]}
-          /> */}
             </div>
           </div>
           <ToastContainer />

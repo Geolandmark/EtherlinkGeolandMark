@@ -12,7 +12,7 @@ export const PropertyProvider = ({ children }) => {
   const [activeTab, setActiveTab] = useState("All");
   const [category, setCategory] = useState("All");
   const web3 = new Web3("https://node.ghostnet.etherlink.com");
-  const contractAddress = "0x693F502aE2ab50F76Ed43c42584B29cCa805C24C";
+  const contractAddress = "";
 
   const contractInstance = new web3.eth.Contract(abi.abi, contractAddress);
 
@@ -48,19 +48,12 @@ export const PropertyProvider = ({ children }) => {
     setSingleSelection(data);
   };
 
-  // const RegisterAssetOnChain = async (loct, desc, long, lat, hasLegalDocs ) => {
-
-  // }
-
   const fetchSingleRegistry = async (id) => {
     setStatus(STATE.LOADING);
     try {
       const response = await getSingleRegisteredLands(id);
-      console.log(response.data.data, "oijuh[poiu");
       setSingleSelection(response.data.data.records);
       setStatus(STATE.SUCCESS);
-
-      // setStatus(STATE.SUCCESS);
     } catch (err) {
       if (err.response.status === 401) {
         toast.info("Session Expired. Please Login.");
@@ -73,54 +66,15 @@ export const PropertyProvider = ({ children }) => {
     }
   };
 
-  const retrieveContractAssets = async () => {
-    try {
-      const assets = await contractInstance.methods.retrieveAllAsset().call();
-      console.log("Existing Assets:");
-      assets.forEach((asset) => {
-        console.log(
-          `Location: ${asset.location}, Description: ${
-            asset.description
-          }, Longitudes: [${asset.longitudes.join(
-            ", "
-          )}], Latitudes: [${asset.latitudes.join(
-            ", "
-          )}], Has Legal Document: ${asset.hasLegalDocument}`
-        );
-      });
-    } catch (error) {
-      console.error("Retrieve all assets error:", error);
-    }
-  };
-
   const getWalletInformation = async (address) => {
     try {
-      const ownerInfo = await contractInstance.methods.getOwnerInformation("0x48C3762fF86e96559b5C09047b1Df5882160eB4C").call();
-      console.log("Owner Information:", ownerInfo);
-      return ownerInfo; // Optionally return the owner information
+      const ownerInfo = await contractInstance.methods
+        .getOwnerInformation("0x48C3762fF86e96559b5C09047b1Df5882160eB4C")
+        .call();
+      return ownerInfo;
     } catch (error) {
       console.error("Retrieve owner information error:", error);
-      throw error; // Re-throw the error to handle it in the calling function
-    }
-  };
-
-  const createContractAsset = async (
-    location,
-    description,
-    long,
-    lat,
-    hasLegalDocument,
-    signerAddress
-  ) => {
-    try {
-      // Call the contract method to create a new asset
-      const tx = await contractInstance.methods
-        .createAsset(location, description, long, lat, hasLegalDocument)
-        .send({ from: web3.eth.defaultAccount });
-
-      console.log("Asset created successfully:", tx);
-    } catch (error) {
-      console.error("Create new asset error:", error);
+      throw error;
     }
   };
 
@@ -138,14 +92,15 @@ export const PropertyProvider = ({ children }) => {
           ownership.dateOfBirth,
           ownership.placeOfBirth,
           ownership.country,
-          ownership.stateOfOrigin,
-        ).send({ from: "0x48C3762fF86e96559b5C09047b1Df5882160eB4C"});
+          ownership.stateOfOrigin
+        )
+        .send({ from: "0x48C3762fF86e96559b5C09047b1Df5882160eB4C" });
 
       console.log("Transaction sent:", tx);
-      return tx; // Optionally return the transaction hash or receipt
+      return tx;
     } catch (error) {
       console.error("Error sending transaction:", error);
-      throw error; // Re-throw the error to handle it in the calling function
+      throw error;
     }
   };
 
@@ -176,7 +131,7 @@ export const PropertyProvider = ({ children }) => {
         handleSingleSelection,
         status,
         saveOwnerOnchain,
-        getWalletInformation
+        getWalletInformation,
       }}
     >
       {children}

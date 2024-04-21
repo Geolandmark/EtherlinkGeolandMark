@@ -1,7 +1,7 @@
 import React from "react";
 import propertyData from "../../json/propertyData";
 import Property from "./Property";
-// import { useNavigate } from "react-router-dom";
+
 
 function SimilarProducts() {
   const getRandomProperties = (array, count) => {

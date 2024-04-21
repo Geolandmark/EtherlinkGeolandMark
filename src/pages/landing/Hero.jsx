@@ -1,7 +1,6 @@
 import React from "react";
-import hero from "../../assets/hero-bg.svg";
 import Navbar from "./Navbar";
-import { Link } from "react-router-dom";
+
 
 function Hero() {
   return (
@@ -21,11 +20,6 @@ function Hero() {
           <p className="md:text-xl text-sm  ">
             Empowering Land Owners <br /> with Secure Asset Tokenization
           </p>
-          {/* <Link to="/login">
-            <button className="bg-[#009FBD] font-bold w-[45.35vw] md:w-[15.68vw] h-[4.72vh] md:rounded-[0.53rem] rounded-[0.22rem] text-xs md:text-sm hover:bg-opacity-75 ">
-              Register Your Land Now!
-            </button>
-          </Link> */}
           <div className="flex gap-2 bg-white px-2 py-2 rounded-md">
             <div className="text-black text-lg text-bold">Powered by</div>
             <img

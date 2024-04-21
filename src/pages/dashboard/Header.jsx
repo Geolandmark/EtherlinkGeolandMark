@@ -2,12 +2,12 @@ import React from "react";
 import profile from "../../assets/dashboard/profile.svg";
 import notif from "../../assets/dashboard/notif.svg";
 import { useLocation } from "react-router-dom";
-import { useAuth } from "../../contexts/authContext";
+import { useContract } from "../../contexts/contractContext";
 import { truncateWalletAddress } from "../../utils/truncateAddress";
 
 function Header() {
   const location = useLocation();
-  const { user, address } = useAuth();
+  const { address } = useContract();
   let title;
   let subtitle;
 

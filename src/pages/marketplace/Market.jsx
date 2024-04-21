@@ -1,40 +1,27 @@
 import React, { useState, useEffect } from "react";
-import ReactPaginate from "react-paginate";
 import filter from "../../assets/marketplace/filter.svg";
 import search from "../../assets/marketplace/search.svg";
 import Property from "./Property";
 import { useProperty } from "../../contexts/propertyContext";
 import Hero from "./Hero";
-import Navbar from "../landing/Navbar";
 import { STATE } from "../../utils/stateConstants";
-import { retrievePinnedData } from "../../services/pinata";
-import { useAuth } from "../../contexts/authContext";
+import { useContract } from "../../contexts/contractContext";
 import LoadingSpinner from "../../utils/spinner";
 
 function Market() {
-  const {
-    activeTab,
-    onActiveTab,
-    onPropertyClick,
-    showParent,
-    propData,
-    onBackClick,
-    selectedProperty,
-  } = useProperty();
+  const { activeTab, onActiveTab, onPropertyClick } = useProperty();
 
   const [fetchedData, setFetchedData] = useState([]);
-  const { fetchDataByIpfsHash, address, fetchAllData, handleStatus, status } =
-    useAuth();
+  const { fetchAllData, handleStatus, status } = useContract();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchAllData();
-        setFetchedData(data);
+        setFetchedData(data.slice().reverse());
       } catch (error) {
         console.error("Error fetching pinned data:", error);
         handleStatus(STATE.ERROR);
-        // Handle error (e.g., show error message)
       }
     };
 
@@ -43,7 +30,9 @@ function Market() {
 
   return (
     <div className="relative w-screen h-screen">
-      <div className="fixed">{status === STATE.LOADING && <LoadingSpinner />}</div>
+      <div className="fixed">
+        {status === STATE.LOADING && <LoadingSpinner />}
+      </div>
       {status === STATE.SUCCESS && (
         <div>
           <Hero />
@@ -70,26 +59,6 @@ function Market() {
                 >
                   Tokenzed Asset
                 </button>
-                {/* <button
-                  className={`${
-                    activeTab === "Classic"
-                      ? "bg-[#009FBD] text-white"
-                      : "border-[1px] border-[#009FBD] text-[#B9B9B9] "
-                  }  border-[1px] border-[#009FBD] px-[1.56vw] h-full rounded-[0.625rem] text-[#B9B9B9] `}
-                  onClick={() => onActiveTab("Classic", "Classic")}
-                >
-                  Classic
-                </button>
-                <button
-                  className={`${
-                    activeTab === "Premium"
-                      ? "bg-[#009FBD] text-white"
-                      : "border-[1px] border-[#009FBD] text-[#B9B9B9] "
-                  }  border-[1px] border-[#009FBD] px-[1.56vw] h-full rounded-[0.625rem] text-[#B9B9B9] `}
-                  onClick={() => onActiveTab("Premium", "Premium")}
-                >
-                  Premium
-                </button> */}
               </div>
               <div className="h-full flex items-center gap-[0.73vw] ">
                 <div className="border-[1px] border-[#009FBD] w-[4.91vh] flex items-center justify-center rounded-sm h-full ">
@@ -109,7 +78,7 @@ function Market() {
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-x-[1.927vw] gap-y-[7.13vh]">
               {fetchedData.map((item) => (
                 <Property
-                  key={item.id} // Assuming each item has a unique id
+                  key={item.id}
                   item={item}
                   activeTab={activeTab}
                   onPropertyClick={onPropertyClick}
